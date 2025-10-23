@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Generic Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+        <a class="navbar-brand" href="index.html">Task System</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Task Details -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3>Design Homepage</h3>
+                        <span class="badge badge-warning p-2">IN_PROGRESS</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Project:</strong> New Website Launch</p>
+                        <p><strong>Assigned by:</strong> Manager One</p>
+                        <p><strong>Due Date:</strong> 2025-11-30</p>
+                        <hr>
+                        <p><strong>Description:</strong></p>
+                        <p>Create a modern, responsive homepage design based on the new brand guidelines. Focus on user experience and clear calls-to-action.</p>
+                    </div>
+                </div>
+
+                <!-- Submit Query -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Submit a Query (Based on Query Entity)
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="queryText">Your Question or Comment:</label>
+                                <textarea class="form-control" id="queryText" rows="3" placeholder="e.g., Where can I find the brand guidelines?"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Submit Query</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Previous Queries -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Task Queries
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <p class="mb-1"><strong>Employee One:</strong> Where are the brand guidelines?</p>
+                            <small class="text-muted">Oct 22, 2025</small>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="mb-1"><strong>Manager One:</strong> They are attached to the project brief.</p>
+                            <small class="text-muted">Oct 22, 2025</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="employee_dashboard.html" class="btn btn-outline-secondary">&larr; Back to Employee Dashboard</a>
+            <a href="manager_dashboard.html" class="btn btn-outline-secondary">&larr; Back to Manager Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

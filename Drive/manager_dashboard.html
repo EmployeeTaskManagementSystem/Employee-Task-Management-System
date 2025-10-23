@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <a class="navbar-brand" href="manager_dashboard.html">Manager Panel</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <h2>Manager Dashboard</h2>
+        <p>Welcome, Manager One!</p>
+
+        <!-- My Projects Section -->
+        <div class="card mt-4">
+            <div class="card-header">
+                My Projects & Tasks (Based on Project & Task Entities)
+            </div>
+            <div class="card-body">
+                <!-- Project 1 -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">New Website Launch</h5>
+                        <p class="card-text">Deadline: 2025-12-31</p>
+                        <h6>Tasks for this project:</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Design Homepage</strong>
+                                    <small class="d-block text-muted">Assigned to: Employee One</small>
+                                </div>
+                                <span class="badge badge-warning badge-pill">IN_PROGRESS</span>
+                                <a href="task_detail.html" class="btn btn-sm btn-outline-primary">View</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Setup Database</strong>
+                                    <small class="d-block text-muted">Assigned to: Employee Two</small>
+                                </div>
+                                <span class="badge badge-danger badge-pill">PENDING</span>
+                                <a href="task_detail.html" class="btn btn-sm btn-outline-primary">View</a>
+                            </li>
+                        </ul>
+                        <!-- Link to add a new task -->
+                        <a href="add_task.html" class="btn btn-primary mt-3">Add New Task</a>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Q1 Marketing Campaign</h5>
+                        <p class="card-text">Deadline: 2026-03-31</p>
+                        <h6>Tasks for this project:</h6>
+                         <ul class="list-group">
+                            <li class="list-group-item">No tasks assigned yet.</li>
+                        </ul>
+                        <!-- Link to add a new task -->
+                        <a href="add_task.html" class="btn btn-primary mt-3">Add New Task</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

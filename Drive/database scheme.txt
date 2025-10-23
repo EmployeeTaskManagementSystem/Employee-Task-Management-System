@@ -1,0 +1,113 @@
+-- This SQL file creates the schema based on your PlantUML diagram and adds dummy data.
+-- It's written for a generic SQL dialect (like PostgreSQL or MySQL).
+
+-- --- Entity Definitions ---
+
+-- User Entity (Covers Admin, Manager, Employee, and Profile)
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    role VARCHAR(10) NOT NULL CHECK(role IN ('ADMIN', 'MANAGER', 'EMPLOYEE')), -- Using ENUM check
+    contact_details VARCHAR(255),
+    profile_info TEXT
+);
+
+-- Project Entity
+CREATE TABLE Projects (
+    project_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    start_date DATE,
+    deadline DATE,
+    created_by_admin_id INT NOT NULL,
+    assigned_manager_id INT,
+    FOREIGN KEY (created_by_admin_id) REFERENCES Users(user_id),
+    FOREIGN KEY (assigned_manager_id) REFERENCES Users(user_id)
+);
+
+-- Task Entity
+CREATE TABLE Tasks (
+    task_id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    status VARCHAR(11) NOT NULL CHECK(status IN ('PENDING', 'IN_PROGRESS', 'COMPLETED')),
+    priority INT,
+    due_date DATE,
+    project_id INT NOT NULL,
+    assigned_to_employee_id INT,
+    assigned_by_manager_id INT NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id),
+    FOREIGN KEY (assigned_to_employee_id) REFERENCES Users(user_id),
+    FOREIGN KEY (assigned_by_manager_id) REFERENCES Users(user_id)
+);
+
+-- Query/Comment Entity
+CREATE TABLE Queries (
+    query_id SERIAL PRIMARY KEY,
+    query_text TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    task_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES Tasks(task_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+-- OTP Entity
+CREATE TABLE OTPs (
+    otp_id SERIAL PRIMARY KEY,
+    otp_code VARCHAR(10) NOT NULL,
+    expiry_timestamp TIMESTAMP NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+-- --- Dummy Data Inserts ---
+
+-- 1. Create Users
+INSERT INTO Users (email, password_hash, first_name, last_name, role)
+VALUES
+('admin@test.com', 'hashed_pw_admin', 'Admin', 'User', 'ADMIN'),
+('manager1@test.com', 'hashed_pw_manager', 'Manager', 'One', 'MANAGER'),
+('emp1@test.com', 'hashed_pw_emp1', 'Employee', 'One', 'EMPLOYEE'),
+('emp2@test.com', 'hashed_pw_emp2', 'Employee', 'Two', 'EMPLOYEE');
+
+-- 2. Create a Project
+INSERT INTO Projects (name, description, start_date, deadline, created_by_admin_id, assigned_manager_id)
+VALUES
+('New Website Launch', 'Complete redesign of the corporate website.', '2025-10-01', '2025-12-31', 
+ 1, -- Created by Admin
+ 2  -- Assigned to Manager One
+);
+
+-- 3. Create Tasks for the Project
+INSERT INTO Tasks (title, description, status, priority, due_date, project_id, assigned_to_employee_id, assigned_by_manager_id)
+VALUES
+('Design Homepage', 'Create a modern, responsive homepage design.', 'IN_PROGRESS', 1, '2025-11-30', 
+ 1, -- Project: New Website Launch
+ 3, -- Assigned to: Employee One
+ 2  -- Assigned by: Manager One
+),
+('Setup Database', 'Initialize the production database schema.', 'PENDING', 1, '2025-11-15',
+ 1, -- Project: New Website Launch
+ 4, -- Assigned to: Employee Two
+ 2  -- Assigned by: Manager One
+);
+
+-- 4. Create a Query
+INSERT INTO Queries (query_text, task_id, user_id)
+VALUES
+('Where can I find the new brand guidelines?', 
+ 1, -- Task: Design Homepage
+ 3  -- User: Employee One
+);
+
+-- 5. Create an OTP
+INSERT INTO OTPs (otp_code, expiry_timestamp, user_id)
+VALUES
+('123456', '2025-10-23 18:00:00', 
+ 4 -- User: Employee Two
+);

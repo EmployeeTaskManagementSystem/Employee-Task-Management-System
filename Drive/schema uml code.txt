@@ -1,0 +1,122 @@
+@startuml
+' PlantUML code for the Employee Task Management System Database Schema
+' This diagram is based on the entities and relationships
+' inferred from the provided PowerPoint presentation.
+
+' --- Skin Parameters for better visual appeal ---
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundCorner 10
+skinparam defaultFontName Inter
+skinparam defaultFontSize 14
+
+skinparam class {
+    ArrowColor #444
+    BorderColor #444
+    BackgroundColor #FDFDFD
+    HeaderBackgroundColor #ECECF4
+}
+
+skinparam entity {
+    BorderColor #444
+    BackgroundColor #FDFDFD
+    HeaderBackgroundColor #ECECF4
+}
+
+' --- Entity Definitions ---
+
+' User Entity (Covers Admin, Manager, Employee, and Profile)
+' Based on Slides: 4, 5, 6, 7, 8, 9, 10, 11
+entity "User" as User {
+    + **user_id** (PK)
+    --
+    + email (UK)
+    + password_hash
+    + first_name
+    + last_name
+    + role : enum('ADMIN', 'MANAGER', 'EMPLOYEE')
+    + contact_details
+    + profile_info
+}
+
+' Project Entity
+' Based on Slides: 3, 6, 7, 8
+entity "Project" as Project {
+    + **project_id** (PK)
+    --
+    + name
+    + description
+    + start_date
+    + deadline
+    ..
+    # created_by_admin_id (FK to User.user_id)
+    # assigned_manager_id (FK to User.user_id)
+}
+
+' Task Entity
+' Based on Slides: 3, 8, 9, 10, 11
+entity "Task" as Task {
+    + **task_id** (PK)
+    --
+    + title
+    + description
+    + status : enum('PENDING', 'IN_PROGRESS', 'COMPLETED')
+    + priority
+    + due_date
+    ..
+    # project_id (FK to Project.project_id)
+    # assigned_to_employee_id (FK to User.user_id)
+    # assigned_by_manager_id (FK to User.user_id)
+}
+
+' Query/Comment Entity
+' Based on Slides: 3, 10, 11 ("Employee Interaction", "Upload Queries")
+entity "Query" as Query {
+    + **query_id** (PK)
+    --
+    + query_text
+    + timestamp
+    ..
+    # task_id (FK to Task.task_id)
+    # user_id (FK to User.user_id)
+}
+
+' OTP Entity
+' Based on Slide 5 ("Reset Password" -> "Add OTP")
+entity "OTP" as OTP {
+    + **otp_id** (PK)
+    --
+    + otp_code
+    + expiry_timestamp
+    + is_used
+    ..
+    # user_id (FK to User.user_id)
+}
+
+' --- Relationships (Database Connectivity) ---
+
+' An Admin (User) creates Projects
+User "1 (Admin)" ||--o{ "many" Project : "Creates"
+
+' A Manager (User) is assigned to manage Projects
+User "1 (Manager)" ||--o{ "many" Project : "Manages"
+
+' A Project contains one or more Tasks
+Project ||--|{ "1..*" Task : "Contains"
+
+' A Manager (User) assigns Tasks
+User "1 (Manager)" ||--o{ "many" Task : "Assigns"
+
+' An Employee (User) is assigned Tasks
+User "1 (Employee)" ||--o{ "many" Task : "Assigned to"
+
+' A Task can have many Queries
+Task ||--o{ "0..*" Query : "Has"
+
+' A User (Employee/Manager) posts Queries
+User ||--o{ "0..*" Query : "Posts"
+
+' A User requests an OTP for password reset
+User ||--o{ "0..*" OTP : "Requests"
+
+@enduml
